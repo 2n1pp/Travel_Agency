@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="500.0" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #4f98ca;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noborderstravel.controllers.loginController">
+   <children>
+      <HBox prefHeight="150.0" prefWidth="200.0" />
+      <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <ImageView fitHeight="144.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" scaleX="3.0" scaleY="3.0" HBox.hgrow="NEVER">
+               <image>
+                  <Image url="@../images/path1477.png" />
+               </image>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </ImageView>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <HBox prefHeight="120.0" prefWidth="200.0" />
+      <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <GridPane maxHeight="-Infinity" maxWidth="350.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="220.0" style="-fx-background-color: ffffff; -fx-background-radius: 15px;" HBox.hgrow="ALWAYS">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                     <children>
+                        <Pane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Pane prefHeight="200.0" prefWidth="200.0" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" text="TRAVEL LOGIN" textAlignment="CENTER" textFill="#272727" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="Open Sans Semibold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <Pane prefHeight="200.0" prefWidth="200.0" />
+                        <TextField fx:id="username" alignment="CENTER" />
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="15.0" />
+                        <PasswordField fx:id="password" alignment="CENTER" />
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="15.0" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Pane prefHeight="200.0" prefWidth="200.0" />
+                              <Button fx:id="login_btn" defaultButton="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLogin" prefWidth="100.0" style="-fx-background-color: #50d890; -fx-text-fill: #ffffff;" text="Login" />
+                              <Pane prefHeight="200.0" prefWidth="200.0" />
+                           </children>
+                        </HBox>
+                        <Pane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="352.0" prefHeight="30.0" prefWidth="200.0" />
+   </children>
+</VBox>

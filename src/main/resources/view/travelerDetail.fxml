@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="root_vbox" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noborderstravel.controllers.travelerDetailController">
+   <children>
+      <Pane prefHeight="54.0" prefWidth="669.0" style="-fx-background-color: #4f98ca;">
+         <children>
+            <Label layoutX="14.0" layoutY="13.0" text="Traveler nr." textFill="WHITE">
+               <font>
+                  <Font name="Visby CF Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="traveler_nr" layoutX="156.0" layoutY="13.0" text="1" textFill="WHITE">
+               <font>
+                  <Font name="Visby CF Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <FlowPane hgap="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="217.0" prefWidth="669.0" vgap="15.0">
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+         <children>
+            <TextField fx:id="traveler_name" prefHeight="31.0" prefWidth="312.0" promptText="Name" />
+            <TextField fx:id="traveler_surname" prefHeight="31.0" prefWidth="309.0" promptText="Surname" />
+            <DatePicker fx:id="traveler_birthday" prefHeight="31.0" prefWidth="312.0" promptText="Birthday" />
+            <ComboBox fx:id="traveler_gener" prefHeight="31.0" prefWidth="308.0" promptText="Gener">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="Male" />
+                     <String fx:value="Female" />
+                  </FXCollections>
+               </items>
+            </ComboBox>
+            <TextField fx:id="traveler_email" prefHeight="31.0" prefWidth="313.0" promptText="Email" />
+            <TextField fx:id="traveler_mobile" prefHeight="31.0" prefWidth="310.0" promptText="Mobile" />
+            <Pane prefHeight="39.0" prefWidth="519.0" />
+            <Button mnemonicParsing="false" onAction="#nextHandle" prefHeight="31.0" prefWidth="104.0" style="-fx-background-color: #50d890;" text="Next" textFill="WHITE" />
+         </children>
+      </FlowPane>
+   </children>
+</VBox>

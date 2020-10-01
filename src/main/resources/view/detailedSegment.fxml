@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="700.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noborderstravel.controllers.detailedSegmentController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Pane prefHeight="20.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <Label fx:id="air_comp_name_d" text="Air company" wrapText="true">
+               <font>
+                  <Font name="Visby CF Light" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </Label>
+            <Pane prefHeight="20.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" />
+            <Label fx:id="from_city_d" text="Tirana, AL">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Visby CF Light" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="first_departure_d" text="00:00">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Visby CF Bold" size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="from_airport_d" text="Tirana International Mother Teresa" wrapText="true">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Visby CF Light" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Pane prefHeight="20.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/clock.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="trip_duration_d" text="00h 00'">
+               <padding>
+                  <Insets bottom="9.0" />
+               </padding>
+               <font>
+                  <Font name="Visby CF Light" size="15.0" />
+               </font>
+            </Label>
+            <Pane prefHeight="20.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+      <VBox alignment="TOP_RIGHT" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Pane prefHeight="30.0" prefWidth="200.0" />
+            <Label fx:id="to_city_d" text="Madrid, ES">
+               <VBox.margin>
+                  <Insets right="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Visby CF Light" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="last_arrival_d" text="00:00">
+               <VBox.margin>
+                  <Insets right="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Visby CF Bold" size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="to_airport_d" text="Adolfo Suárez Madrid–Barajas" textAlignment="RIGHT" wrapText="true">
+               <VBox.margin>
+                  <Insets right="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Visby CF Light" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+</HBox>
