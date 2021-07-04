@@ -53,6 +53,10 @@ public class durationCalculator {
     }
 
     public String formatter(String duration){
+        if(duration.substring(duration.length() - 1).equals(":")){
+            duration += "00";
+            System.out.println("\n\n\n\nQETU\n\n\n\n");
+        }
         String[] splitet_duration = duration.split(":");
         String days = splitet_duration[0];
         String hours = splitet_duration[1];

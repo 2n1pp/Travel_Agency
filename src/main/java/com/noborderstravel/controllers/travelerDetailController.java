@@ -177,7 +177,7 @@ public class travelerDetailController {
 
                 String home = System.getProperty("user.home");
 
-                File theDir = new File(home + "\\NO BORDERS Travel Agency\\");
+                File theDir = new File(home + "/NO BORDERS Travel Agency/");
 
                 // if the directory does not exist, create it
                 if (!theDir.exists()) {
@@ -197,7 +197,7 @@ public class travelerDetailController {
                 }
 
                 /* outputStream to create PDF */
-                String outputFile = home + "\\NO BORDERS Travel Agency\\" + departing_city
+                String outputFile = home + "/NO BORDERS Travel Agency/" + departing_city
                         .replaceAll("(.*?)(\\()","").replace(")", "")
                         + "-" + arrival_city.replaceAll("(.*?)(\\()","")
                         .replace(")", "") + "-" + departing_at.replace("/","-")

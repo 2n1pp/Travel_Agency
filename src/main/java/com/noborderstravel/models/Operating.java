@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Operating {
     private String carrierCode;
-    private String number;
+//    private String number;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     public String getCarrierCode() {
@@ -16,13 +16,13 @@ public class Operating {
         this.carrierCode = carrierCode;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
+//    public String getNumber() {
+//        return number;
+//    }
+//
+//    public void setNumber(String number) {
+//        this.number = number;
+//    }
 
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -36,7 +36,7 @@ public class Operating {
     public String toString() {
         return "Operating{" +
                 "carrierCode='" + carrierCode + '\'' +
-                ", number='" + number + '\'' +
+//                ", number='" + number + '\'' +
                 ", additionalProperties=" + additionalProperties +
                 '}';
     }

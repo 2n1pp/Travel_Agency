@@ -111,18 +111,18 @@ public class roundFlightResultController {
         roundDetailedFlightController rdtf_controller = loader.getController();
         Scene scene = new Scene(root);
         popupwindow.setResizable(false);
-        OfferItem json = gson.fromJson(flight_jsonText.substring(1, flight_jsonText.length()-1), OfferItem.class);
-        List<Service> s = json.getServices();
+        OfferItem json = gson.fromJson(flight_jsonText, OfferItem.class);
+        List<Itineraries> s = json.getServices();
         int gc = 1;
-        for(Service uh:s) {
-            List<Segment> ss = uh.getSegments();
+        for(Itineraries uh:s) {
+            List<FlightSegment> ss = uh.getSegments();
             List<SegmentInfo> segInfo = new ArrayList<>();
-            for (Segment sss : ss) {
+            for (FlightSegment fs : ss) {
                 SegmentInfo si = new SegmentInfo();
-                FlightSegment fs = sss.getFlightSegment();
+//                FlightSegment fs = sss.getFlightSegment();
                 Departure departure = fs.getDeparture();
                 Arrival arrival = fs.getArrival();
-                String segment_duration = dc.formatter(fs.getDuration().replace("DT",":").replace("H",":").replace("M",":"));
+                String segment_duration = dc.formatter(fs.getDuration().replace("PT","00:").replace("H",":").replace("M",":"));
                 String comp = fs.getCarrierCode();
                 String departure_iata = departure.getIataCode();
                 String departure_at = departure.getAt();
@@ -142,10 +142,23 @@ public class roundFlightResultController {
             rdtf_controller.setSegmentList(segInfo, gc);
             gc ++;
         }
+//        Price price = json.getPrice();
+//        PricePerAdult ppa = json.getPricePerAdult();
+//        PricePerChild ppc = json.getPricePerChild();
+//        PricePerInfant ppi = json.getPricePerInfant();
         Price price = json.getPrice();
-        PricePerAdult ppa = json.getPricePerAdult();
-        PricePerChild ppc = json.getPricePerChild();
-        PricePerInfant ppi = json.getPricePerInfant();
+
+        Price ppa = null;
+        Price ppc = null;
+        Price ppi = null;
+        List<TravelerPricings> tp = json.getTravelerPricings();
+        for(TravelerPricings x : tp){
+            if(x.getTravelerType().equals("ADULT")) ppa = x.getPrice();
+            if(x.getTravelerType().equals("CHILD")) ppc = x.getPrice();
+            if(x.getTravelerType().equals("HELD_INFANT")) ppi = x.getPrice();
+        }
+
+
         String adult_price = null;
         String children_price = null;
         String infant_price = null;
@@ -160,6 +173,7 @@ public class roundFlightResultController {
         try{
             infant_price = "Infant x" + infants + ": " + ppi.getTotal() + " €";
         }catch (Exception e){}
+//        rdtf_controller.setPrice(adult_price, children_price, infant_price, "500", nr_of_persons);
         rdtf_controller.setPrice(adult_price, children_price, infant_price, total_price, nr_of_persons);
         rdtf_controller.setAts(going_departing_at, going_arrival_at, going_from, going_to);
         popupwindow.setScene(scene);

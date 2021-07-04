@@ -6,16 +6,16 @@ import java.util.Map;
 
 public class Flight {
 
-    private List<Datum> data = null;
+    private List<OfferItem> data = null;
     private Dictionaries dictionaries;
     private Meta meta;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public List<Datum> getData() {
+    public List<OfferItem> getData() {
         return data;
     }
 
-    public void setData(List<Datum> data) {
+    public void setData(List<OfferItem> data) {
         this.data = data;
     }
 
@@ -43,4 +43,14 @@ public class Flight {
         this.additionalProperties.put(name, value);
     }
 
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "data=" + data +
+                ", dictionaries=" + dictionaries +
+                ", meta=" + meta +
+                ", additionalProperties=" + additionalProperties +
+                '}';
+    }
 }

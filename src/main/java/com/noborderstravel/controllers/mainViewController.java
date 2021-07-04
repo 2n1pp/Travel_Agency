@@ -22,6 +22,7 @@ import java.util.*;
 import org.controlsfx.control.textfield.TextFields;
 import com.google.gson.Gson;
 
+
 public class mainViewController{
 
     Gson gson = new Gson();
@@ -169,6 +170,7 @@ public class mainViewController{
             String final_comp_name = "";
             String total_duration = "00:00:00";
             String flight_json = "";
+            int last_id = 0;
             if (flight_response.equals("500")) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.initOwner((result_vbox.getScene().getWindow()));
@@ -188,77 +190,75 @@ public class mainViewController{
             } else {
                 Flight json = gson.fromJson(flight_response, Flight.class);
                 Dictionaries dict = json.getDictionaries();
-                List<Datum> data = json.getData();
+                List<OfferItem> data = json.getData();
                 String departure_at = "";
                 String arrival_at = "";
-                for (Datum x : data) {
-                    List<OfferItem> p = x.getOfferItems();
-                    for (OfferItem oi : p) {
-                        int klkl = 0;
-                        Price price = oi.getPrice();
-                        String total_price = "€ " + price.getTotal();
-                        List<Service> s = oi.getServices();
-                        System.out.println(s.size());
-                        for (Service uh : s) {
-                            List<Segment> ss = uh.getSegments();
-                            for (Segment sss : ss) {
-                                FlightSegment fs = sss.getFlightSegment();
-                                Departure departure = fs.getDeparture();
-                                Arrival arrival = fs.getArrival();
-                                Operating operating = fs.getOperating();
-                                String segment_duration = fs.getDuration().replace("DT", ":").replace("H", ":").replace("M", ":");
-                                String comp = operating.getCarrierCode();
-                                airline_names.add(dict.getCarriers().get(comp));
-                                fs.setCarrierCode(dict.getCarriers().get(comp));
-                                String departure_iata = departure.getIataCode();
-                                departure_at = departure.getAt();
-                                String arrival_iata = arrival.getIataCode();
-                                arrival_at = arrival.getAt();
-                                to_iata = arrival_iata;
-                                arrival_time = arrival_at.substring(11, 16);
-                                if (klkl == 0) {
-                                    from_iata = departure_iata;
-                                    departure_time = departure_at.substring(11, 16);
-                                }
-                                total_duration = dc.calc(total_duration, segment_duration);
+                for (OfferItem oi : data) {
+                    int klkl = 0;
+                    Price price = oi.getPrice();
+                    String total_price = "€ " + price.getTotal();
+//                    if(last_id==oi.get)
+                    List<Itineraries> s = oi.getServices();
+                    for (Itineraries uh : s) {
+                        total_duration = uh.getDuration().replace("PT", "00:").replace("H", ":").replace("M", ":");
+//                        total_duration = uh.getDuration().substring(2);
+                        List<FlightSegment> ss = uh.getSegments();
+                        for (FlightSegment fs : ss) {
+                            Departure departure = fs.getDeparture();
+                            Arrival arrival = fs.getArrival();
+                            Operating operating = fs.getOperating();
+                            System.out.println(fs);
+                            String segment_duration = fs.getDuration().replace("DT", ":").replace("H", ":").replace("M", ":");
+                            String comp = ((comp = fs.getCarrierCode()) != null) ? comp : "N/A";
+                            airline_names.add(dict.getCarriers().get(comp));
+                            fs.setCarrierCode(dict.getCarriers().get(comp));
+                            String departure_iata = departure.getIataCode();
+                            departure_at = departure.getAt();
+                            String arrival_iata = arrival.getIataCode();
+                            arrival_at = arrival.getAt();
+                            to_iata = arrival_iata;
+                            arrival_time = arrival_at.substring(11, 16);
+                            if (klkl == 0) {
+                                from_iata = departure_iata;
+                                departure_time = departure_at.substring(11, 16);
+                            }
 
-                                klkl++;
-                            }
+                            klkl++;
                         }
-                        if (klkl != 1) {
-                            if (klkl == 2) {
-                                nr_of_stops = klkl - 1 + " stop";
-                            } else {
-                                nr_of_stops = klkl - 1 + " stops";
-                            }
-                        }
-                        String testing_name = airline_names.get(0);
-                        for (String comp_name : airline_names) {
-                            if(comp_name == null){
-                                comp_name = "Name not available";
-                            }
-                            if (!comp_name.equals(testing_name)) {
-                                final_comp_name = "Multiple carriers";
-                                break;
-                            } else {
-                                final_comp_name = comp_name;
-                            }
-                        }
-                        flight_json = x.toString();
-                        total_duration = dc.formatter(total_duration);
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/flightResult.fxml"));
-                        try {
-                            result_vbox.getChildren().add(loader.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        flightResultController childController = loader.getController();
-                        childController.setPassagerNr(adults_nr.getText(), childrens_nr.getText(), infants_nr.getText());
-                        childController.setAts(departure_at, arrival_at);
-                        childController.setData(final_comp_name, departure_time, arrival_time, from_iata, to_iata, total_duration, nr_of_stops, total_price, flight_json, token);
-                        airline_names.clear();
-                        total_duration = "00:00:00";
                     }
+                    if (klkl != 1) {
+                        if (klkl == 2) {
+                            nr_of_stops = klkl - 1 + " stop";
+                        } else {
+                            nr_of_stops = klkl - 1 + " stops";
+                        }
+                    }
+                    String testing_name = airline_names.get(0);
+                    for (String comp_name : airline_names) {
+                        if(comp_name == null){
+                            comp_name = "Name not available";
+                        }
+                        if (!comp_name.equals(testing_name)) {
+                            final_comp_name = "Multiple carriers";
+                            break;
+                        } else {
+                            final_comp_name = comp_name;
+                        }
+                    }
+                    total_duration = dc.formatter(total_duration);
+                    flight_json = new Gson().toJson(oi);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/flightResult.fxml"));
+                    try {
+                        result_vbox.getChildren().add(loader.load());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    flightResultController childController = loader.getController();
+                    childController.setPassagerNr(adults_nr.getText(), childrens_nr.getText(), infants_nr.getText());
+                    childController.setAts(departure_at, arrival_at);
+                    childController.setData(final_comp_name, departure_time, arrival_time, from_iata, to_iata, total_duration, nr_of_stops, total_price, flight_json, token);
+                    airline_names.clear();
+//                    total_duration = "00:00:00";
                 }
             }
             loading_gif.setVisible(false);
@@ -328,139 +328,147 @@ public class mainViewController{
             } else {
                 Flight json = gson.fromJson(flight_response, Flight.class);
                 Dictionaries dict = json.getDictionaries();
-                List<Datum> data = json.getData();
+                List<OfferItem> data = json.getData();
                 String going_departure_at = "";
                 String going_arrival_at = "";
                 String coming_departure_at = "";
                 String coming_arrival_at = "";
-                for (Datum x : data) {
-                    List<OfferItem> p = x.getOfferItems();
-                    for (OfferItem oi : p) {
-                        int going_stops_counter = 0;
-                        int coming_stops_counter = 0;
-                        Price price = oi.getPrice();
-                        String total_price = "€ " + price.getTotal();
-                        List<Service> s = oi.getServices();
-                        System.out.println(s.size());
-                        int gc = 1;
-                        for (Service uh : s) {
-                            List<Segment> ss = uh.getSegments();
-                            if(gc == 1){
-                                going_stops_counter = 0;
-                                System.out.println("going");
-                                for (Segment sss : ss) {
-                                    FlightSegment fs = sss.getFlightSegment();
-                                    Departure departure = fs.getDeparture();
-                                    Arrival arrival = fs.getArrival();
-                                    Operating operating = fs.getOperating();
-                                    String segment_duration = fs.getDuration().replace("DT", ":").replace("H", ":").replace("M", ":");
-                                    String comp = operating.getCarrierCode();
-                                    going_airline_names.add(dict.getCarriers().get(comp));
-                                    fs.setCarrierCode(dict.getCarriers().get(comp));
-                                    String departure_iata = departure.getIataCode();
-                                    going_departure_at = departure.getAt();
-                                    String arrival_iata = arrival.getIataCode();
-                                    going_arrival_at = arrival.getAt();
-                                    going_to_iata = arrival_iata;
-                                    going_arrival_time = going_arrival_at.substring(11, 16);
-                                    if (going_stops_counter == 0) {
-                                        going_from_iata = departure_iata;
-                                        going_departure_time = going_departure_at.substring(11, 16);
-                                    }
-                                    going_total_duration = dc.calc(going_total_duration, segment_duration);
-                                    going_stops_counter++;
+                for (OfferItem oi : data) {
+//                    List<OfferItem> p = x.getOfferItems();
+//                    for (OfferItem oi : p) {
+                    int going_stops_counter = 0;
+                    int coming_stops_counter = 0;
+                    Price price = oi.getPrice();
+                    String total_price = "€ " + price.getTotal();
+//                        String total_price = "€ " + price.getTotal();
+                    List<Itineraries> s = oi.getServices();
+                    System.out.println(s.size());
+                    int gc = 1;
+                    for (Itineraries uh : s) {
+                        List<FlightSegment> ss = uh.getSegments();
+                        if(gc == 1){
+                            going_stops_counter = 0;
+                            System.out.println("going");
+                            for (FlightSegment fs : ss) {
+//                                FlightSegment fs = sss.getFlightSegment();
+                                Departure departure = fs.getDeparture();
+                                Arrival arrival = fs.getArrival();
+                                Operating operating = fs.getOperating();
+                                going_total_duration = uh.getDuration().replace("PT", "00:").replace("H", ":").replace("M", ":");
+                                System.out.println("going duration" + going_total_duration);
+                                //                                String segment_duration = fs.getDuration().replace("PT", "00:").replace("H", ":").replace("M", ":");
+                                String comp = operating.getCarrierCode();
+                                going_airline_names.add(dict.getCarriers().get(comp));
+                                fs.setCarrierCode(dict.getCarriers().get(comp));
+                                String departure_iata = departure.getIataCode();
+                                going_departure_at = departure.getAt();
+                                String arrival_iata = arrival.getIataCode();
+                                going_arrival_at = arrival.getAt();
+                                going_to_iata = arrival_iata;
+                                going_arrival_time = going_arrival_at.substring(11, 16);
+                                if (going_stops_counter == 0) {
+                                    going_from_iata = departure_iata;
+                                    going_departure_time = going_departure_at.substring(11, 16);
                                 }
+//                                going_total_duration = "00:05:00";
+//                                going_total_duration = dc.calc(going_total_duration, segment_duration);
+                                going_stops_counter++;
                             }
-                            else if(gc ==2){
-                                coming_stops_counter = 0;
-                                System.out.println("coming");
-                                for (Segment sss : ss) {
-                                    FlightSegment fs = sss.getFlightSegment();
-                                    Departure departure = fs.getDeparture();
-                                    Arrival arrival = fs.getArrival();
-                                    Operating operating = fs.getOperating();
-                                    String segment_duration = fs.getDuration().replace("DT", ":").replace("H", ":").replace("M", ":");
-                                    String comp = operating.getCarrierCode();
-                                    coming_airline_names.add(dict.getCarriers().get(comp));
-                                    fs.setCarrierCode(dict.getCarriers().get(comp));
-                                    String departure_iata = departure.getIataCode();
-                                    coming_departure_at = departure.getAt();
-                                    String arrival_iata = arrival.getIataCode();
-                                    coming_arrival_at = arrival.getAt();
-                                    coming_to_iata = arrival_iata;
-                                    coming_arrival_time = coming_arrival_at.substring(11, 16);
-                                    if (coming_stops_counter == 0) {
-                                        coming_from_iata = departure_iata;
-                                        coming_departure_time = coming_departure_at.substring(11, 16);
-                                    }
-                                    coming_total_duration = dc.calc(coming_total_duration, segment_duration);
-                                    coming_stops_counter++;
+                        }
+                        else if(gc ==2){
+                            coming_stops_counter = 0;
+                            System.out.println("coming");
+                            for (FlightSegment fs : ss) {
+//                                FlightSegment fs = sss.getFlightSegment();
+                                Departure departure = fs.getDeparture();
+                                Arrival arrival = fs.getArrival();
+                                Operating operating = fs.getOperating();
+                                coming_total_duration = uh.getDuration().replace("PT", "00:").replace("H", ":").replace("M", ":");
+                                System.out.println("coming duration" + coming_total_duration);
+                                //                                String segment_duration = fs.getDuration().replace("PT", "00:").replace("H", ":").replace("M", ":");
+                                String comp = operating.getCarrierCode();
+                                coming_airline_names.add(dict.getCarriers().get(comp));
+                                fs.setCarrierCode(dict.getCarriers().get(comp));
+                                String departure_iata = departure.getIataCode();
+                                coming_departure_at = departure.getAt();
+                                String arrival_iata = arrival.getIataCode();
+                                coming_arrival_at = arrival.getAt();
+                                coming_to_iata = arrival_iata;
+                                coming_arrival_time = coming_arrival_at.substring(11, 16);
+                                if (coming_stops_counter == 0) {
+                                    coming_from_iata = departure_iata;
+                                    coming_departure_time = coming_departure_at.substring(11, 16);
                                 }
-                            }
-                            gc ++;
-                        }
-                        if (going_stops_counter != 1) {
-                            if (going_stops_counter == 2) {
-                                going_nr_of_stops = going_stops_counter - 1 + " stop";
-                            } else {
-                                going_nr_of_stops = going_stops_counter - 1 + " stops";
+//                                coming_total_duration = "00:05:00";
+//                                coming_total_duration = dc.calc(coming_total_duration, segment_duration);
+                                coming_stops_counter++;
                             }
                         }
-                        if (coming_stops_counter != 1) {
-                            if (coming_stops_counter == 2) {
-                                coming_nr_of_stops = coming_stops_counter - 1 + " stop";
-                            } else {
-                                coming_nr_of_stops = coming_stops_counter - 1 + " stops";
-                            }
-                        }
-
-                        String going_testing_name = going_airline_names.get(0);
-                        for (String comp_name : going_airline_names) {
-                            if(comp_name == null){
-                                comp_name = "Name not available";
-                            }
-                            if (!comp_name.equals(going_testing_name)) {
-                                going_final_comp_name = "Multiple carriers";
-                                break;
-                            } else {
-                                going_final_comp_name = comp_name;
-                            }
-                        }
-
-                        String coming_testing_name = coming_airline_names.get(0);
-                        for (String comp_name : coming_airline_names) {
-                            if(comp_name == null){
-                                comp_name = "Name not available";
-                            }
-                            if (!comp_name.equals(coming_testing_name)) {
-                                coming_final_comp_name = "Multiple carriers";
-                                break;
-                            } else {
-                                coming_final_comp_name = comp_name;
-                            }
-                        }
-                        System.out.println("going from " + going_from_iata +" at: " + going_departure_time +" to " + going_to_iata + " at: " + going_arrival_time + going_nr_of_stops);
-                        System.out.println("coming from " + coming_from_iata +" at: " + coming_departure_time +" to " + coming_to_iata + " at: " + coming_arrival_time + coming_nr_of_stops);
-                        flight_json = x.toString();
-                        going_total_duration = dc.formatter(going_total_duration);
-                        coming_total_duration = dc.formatter(coming_total_duration);
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/roundFlightResult.fxml"));
-                        try {
-                            result_vbox.getChildren().add(loader.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        String going_date = this.departing_date.getValue().toString();
-                        String coming_date = this.return_date.getValue().toString();
-                        roundFlightResultController childController = loader.getController();
-                        childController.setPassagerNr(adults_nr.getText(), childrens_nr.getText(), infants_nr.getText());
-                        childController.setAts(going_departure_at, going_arrival_at, coming_departure_at, coming_arrival_at);
-                        childController.setData(going_final_comp_name, going_departure_time, going_arrival_time, going_from_iata, going_to_iata, going_total_duration, going_nr_of_stops, coming_final_comp_name, coming_departure_time, coming_arrival_time, coming_from_iata, coming_to_iata, coming_total_duration, coming_nr_of_stops, going_date, coming_date, total_price, flight_json, token);
-                        going_airline_names.clear();
-                        coming_airline_names.clear();
-                        going_total_duration = "00:00:00";
-                        coming_total_duration = "00:00:00";
+                        gc ++;
                     }
+                    if (going_stops_counter != 1) {
+                        if (going_stops_counter == 2) {
+                            going_nr_of_stops = going_stops_counter - 1 + " stop";
+                        } else {
+                            going_nr_of_stops = going_stops_counter - 1 + " stops";
+                        }
+                    }
+                    if (coming_stops_counter != 1) {
+                        if (coming_stops_counter == 2) {
+                            coming_nr_of_stops = coming_stops_counter - 1 + " stop";
+                        } else {
+                            coming_nr_of_stops = coming_stops_counter - 1 + " stops";
+                        }
+                    }
+
+                    String going_testing_name = going_airline_names.get(0);
+                    for (String comp_name : going_airline_names) {
+                        if(comp_name == null){
+                            comp_name = "Name not available";
+                        }
+                        if (!comp_name.equals(going_testing_name)) {
+                            going_final_comp_name = "Multiple carriers";
+                            break;
+                        } else {
+                            going_final_comp_name = comp_name;
+                        }
+                    }
+
+                    String coming_testing_name = coming_airline_names.get(0);
+                    for (String comp_name : coming_airline_names) {
+                        if(comp_name == null){
+                            comp_name = "Name not available";
+                        }
+                        if (!comp_name.equals(coming_testing_name)) {
+                            coming_final_comp_name = "Multiple carriers";
+                            break;
+                        } else {
+                            coming_final_comp_name = comp_name;
+                        }
+                    }
+                    System.out.println("going from " + going_from_iata +" at: " + going_departure_time +" to " + going_to_iata + " at: " + going_arrival_time + going_nr_of_stops);
+                    System.out.println("coming from " + coming_from_iata +" at: " + coming_departure_time +" to " + coming_to_iata + " at: " + coming_arrival_time + coming_nr_of_stops);
+//                    flight_json = x.toString();
+                    flight_json = new Gson().toJson(oi);
+                    going_total_duration = dc.formatter(going_total_duration);
+                    coming_total_duration = dc.formatter(coming_total_duration);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/roundFlightResult.fxml"));
+                    try {
+                        result_vbox.getChildren().add(loader.load());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    String going_date = this.departing_date.getValue().toString();
+                    String coming_date = this.return_date.getValue().toString();
+                    roundFlightResultController childController = loader.getController();
+                    childController.setPassagerNr(adults_nr.getText(), childrens_nr.getText(), infants_nr.getText());
+                    childController.setAts(going_departure_at, going_arrival_at, coming_departure_at, coming_arrival_at);
+                    childController.setData(going_final_comp_name, going_departure_time, going_arrival_time, going_from_iata, going_to_iata, going_total_duration, going_nr_of_stops, coming_final_comp_name, coming_departure_time, coming_arrival_time, coming_from_iata, coming_to_iata, coming_total_duration, coming_nr_of_stops, going_date, coming_date, total_price, flight_json, token);
+                    going_airline_names.clear();
+                    coming_airline_names.clear();
+                    going_total_duration = "00:00:00";
+                    coming_total_duration = "00:00:00";
+//                    }
                 }
             }
             loading_gif.setVisible(false);

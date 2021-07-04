@@ -83,17 +83,19 @@ public class flightResultController {
         detailedFlightController dtf_controller = loader.getController();
         Scene scene = new Scene(root);
         popupwindow.setResizable(false);
-        OfferItem json = gson.fromJson(flight_jsonText.substring(1, flight_jsonText.length()-1), OfferItem.class);
-        List<Service> s = json.getServices();
-        for(Service uh:s) {
-            List<Segment> ss = uh.getSegments();
+        popupwindow.setAlwaysOnTop(true);
+        System.out.println(flight_jsonText);
+        OfferItem json = gson.fromJson(flight_jsonText, OfferItem.class);
+        List<Itineraries> s = json.getServices();
+        for(Itineraries uh:s) {
+            List<FlightSegment> ss = uh.getSegments();
             List<SegmentInfo> segInfo = new ArrayList<>();
-            for (Segment sss : ss) {
+            for (FlightSegment fs : ss) {
                 SegmentInfo si = new SegmentInfo();
-                FlightSegment fs = sss.getFlightSegment();
                 Departure departure = fs.getDeparture();
                 Arrival arrival = fs.getArrival();
-                String segment_duration = dc.formatter(fs.getDuration().replace("DT",":").replace("H",":").replace("M",":"));
+                String segment_duration = dc.formatter(fs.getDuration().replace("PT","00:").replace("H",":").replace("M",":"));
+//                String segment_duration = fs.getDuration().substring(2);
                 String comp = fs.getCarrierCode();
                 String departure_iata = departure.getIataCode();
                 String departure_at = departure.getAt();
@@ -107,15 +109,22 @@ public class flightResultController {
                 si.setArriving_time(arrival_time);
                 segInfo.add(si);
                 System.out.println("====================================================");
-                System.out.println(segment_duration + ", " + comp  + ", " + departure_iata + ", " + departure_time + ", " + arrival_iata + ", " + arrival_time);
                 dtf_controller.setData(comp, departure_time, arrival_time, segment_duration, departure_iata, arrival_iata, token);
             }
             dtf_controller.setSegmentList(segInfo);
         }
         Price price = json.getPrice();
-        PricePerAdult ppa = json.getPricePerAdult();
-        PricePerChild ppc = json.getPricePerChild();
-        PricePerInfant ppi = json.getPricePerInfant();
+
+        Price ppa = null;
+        Price ppc = null;
+        Price ppi = null;
+        List<TravelerPricings> tp = json.getTravelerPricings();
+        for(TravelerPricings x : tp){
+            if(x.getTravelerType().equals("ADULT")) ppa = x.getPrice();
+            if(x.getTravelerType().equals("CHILD")) ppc = x.getPrice();
+            if(x.getTravelerType().equals("HELD_INFANT")) ppi = x.getPrice();
+        }
+
         String adult_price = null;
         String children_price = null;
         String infant_price = null;

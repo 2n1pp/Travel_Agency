@@ -7,11 +7,20 @@ import java.util.Map;
 public class OfferItem {
 
     private Price price;
-    private PricePerAdult pricePerAdult;
-    private PricePerInfant pricePerInfant;
-    private PricePerChild pricePerChild;
-    private List<Service> services = null;
+//    private PricePerAdult pricePerAdult;
+//    private PricePerInfant pricePerInfant;
+//    private PricePerChild pricePerChild;
+    private List<Itineraries> itineraries = null;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private List<TravelerPricings> travelerPricings = null;
+
+    public List<TravelerPricings> getTravelerPricings() {
+        return travelerPricings;
+    }
+
+    public void setTravelerPricings(List<TravelerPricings> travelerPricings) {
+        this.travelerPricings = travelerPricings;
+    }
 
     public Price getPrice() {
         return price;
@@ -21,28 +30,28 @@ public class OfferItem {
         this.price = price;
     }
 
-    public PricePerAdult getPricePerAdult() {
-        return pricePerAdult;
+//    public PricePerAdult getPricePerAdult() {
+//        return pricePerAdult;
+//    }
+//
+//    public void setPricePerAdult(PricePerAdult pricePerAdult) {
+//        this.pricePerAdult = pricePerAdult;
+//    }
+//
+//    public PricePerInfant getPricePerInfant() { return pricePerInfant; }
+//
+//    public void setPricePerInfant(PricePerInfant pricePerInfant) { this.pricePerInfant = pricePerInfant; }
+//
+//    public PricePerChild getPricePerChild() { return pricePerChild; }
+//
+//    public void setPricePerChild(PricePerChild pricePerChild) { this.pricePerChild = pricePerChild; }
+
+    public List<Itineraries> getServices() {
+        return itineraries;
     }
 
-    public void setPricePerAdult(PricePerAdult pricePerAdult) {
-        this.pricePerAdult = pricePerAdult;
-    }
-
-    public PricePerInfant getPricePerInfant() { return pricePerInfant; }
-
-    public void setPricePerInfant(PricePerInfant pricePerInfant) { this.pricePerInfant = pricePerInfant; }
-
-    public PricePerChild getPricePerChild() { return pricePerChild; }
-
-    public void setPricePerChild(PricePerChild pricePerChild) { this.pricePerChild = pricePerChild; }
-
-    public List<Service> getServices() {
-        return services;
-    }
-
-    public void setServices(List<Service> services) {
-        this.services = services;
+    public void setServices(List<Itineraries> services) {
+        this.itineraries = itineraries;
     }
 
     public Map<String, Object> getAdditionalProperties() {
@@ -56,9 +65,10 @@ public class OfferItem {
     @Override
     public String toString() {
         return "OfferItem{" +
-                "price=" + price +
-                ", pricePerAdult=" + pricePerAdult +
-                ", services=" + services +
+                "itineraries=" + itineraries +
+//                "price=" + price +
+//                ", pricePerAdult=" + pricePerAdult +
+//                ", services=" + services +
                 ", additionalProperties=" + additionalProperties +
                 '}';
     }
